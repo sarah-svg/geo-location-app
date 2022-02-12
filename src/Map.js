@@ -12,6 +12,7 @@ import './styles.css';
 
 export default function Map() {
   const [marker, setMarker] = useState([]);
+  const [selected, setSelected] = useState(null);
  ///maker state
   const clickOnMap = useCallback((e) => { 
     /////setting marker state and previous marker state by spreading
@@ -72,8 +73,19 @@ export default function Map() {
       >
         {marker.map((single, i) => <Marker key={Math.random() + i}
           position={{ lat: single.lat, lng: single.lng }} 
+          onClick={() => setSelected(single)}
         />)}
-
+        {selected ? (
+          <InfoWindow position={{ lat: selected.lat, lng: selected.lat }}
+            onCloseClick={() => setSelected(null)}>
+            <div>
+              <h2>You clicked here!!</h2>
+              <p>Latitude: {selected.lat}</p>
+              <p>Longitude: {selected.lng}</p>
+              <p>Time: {formatRelative(selected.time, new Date())}</p>
+            </div>
+          </InfoWindow>
+        ) : null}
       </GoogleMap>
 
 
