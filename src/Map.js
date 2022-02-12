@@ -12,7 +12,9 @@ import './styles.css';
 
 export default function Map() {
   const [marker, setMarker] = useState([]);
+ ///maker state
   const clickOnMap = useCallback((e) => { 
+    /////setting marker state and previous marker state by spreading
     setMarker((current) => [
       ...current, {
         lat: e.latLng.lat(),
@@ -22,6 +24,11 @@ export default function Map() {
     ]);
   }, []
   );
+  const mapRef = React.useRef();
+////maintain state to not cause re-render
+  const onLoad = React.useCallback((map) => { 
+    mapRef.current = map;
+  }, []);
   const libraries = ['places'];
 
   const mapContainerStyle = {
@@ -60,6 +67,7 @@ export default function Map() {
         center={center}
         options={options}
         onClick={clickOnMap}
+        onLoad={onLoad}
        
       >
         {marker.map((single, i) => <Marker key={Math.random() + i}
