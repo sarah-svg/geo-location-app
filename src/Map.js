@@ -112,7 +112,12 @@ export default function Map() {
   );
 }
 
+function LocateUserAndRenderLocation({ panTo }) {
+  return (
 
+    <div></div>
+  );
+}
 
 
 
