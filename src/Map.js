@@ -1,5 +1,10 @@
 /* eslint-disable no-console */
-import React, { useState, useCallback, useRef } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useRef
+} from 'react';
+
 import {
   GoogleMap,
   useLoadScript,
@@ -12,15 +17,17 @@ import { formatRelative } from 'date-fns';
 import '@reach/combobox/styles.css';
 
 import style from './style.js';
-import './styles.css';
 
 import Search from './Search.jsx';
+
 import LocateUserAndRenderLocation from './LocateUserAndRenderLocation.jsx';
+
+import './styles.css';
 
 export default function Map() {
   const [marker, setMarker] = useState([]);
   const [selected, setSelected] = useState(null);
- ///maker state
+ ///maker state and setter
   const clickOnMap = useCallback((e) => { 
     /////setting marker state and previous marker state by spreading
     setMarker((current) => [

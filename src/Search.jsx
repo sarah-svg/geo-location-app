@@ -1,7 +1,9 @@
 /// import the libraries we need
 /* eslint-disable no-console */
 import '@reach/combobox/styles.css';
+
 import './styles.css';
+
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
@@ -62,7 +64,6 @@ export default function Search({ panTo }) {
           disabled={!ready}
           placeholder='Search Places you want to go'
         />
-  
         <ComboboxPopover>
           <ComboboxList>
             {status === 'OK' &&
@@ -73,7 +74,6 @@ export default function Search({ panTo }) {
               ))}
           </ComboboxList>
         </ComboboxPopover>
-  
       </Combobox>
     </div>
   );
