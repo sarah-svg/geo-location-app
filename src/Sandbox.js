@@ -1,3 +1,5 @@
+// OLD APP.js file used this to play around with the google map api and render my correct coordinates on the screen
+
 import React, { useState } from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
