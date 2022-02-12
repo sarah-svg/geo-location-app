@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {
   GoogleMap,
   useLoadScript,
@@ -9,6 +9,19 @@ import { formatRelative } from 'date-fns';
 import '@reach/combobox/styles.css';
 import style from './style.js';
 import './styles.css';
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from 'use-places-autocomplete';
+
+
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from '@reach/combobox';
 
 export default function Map() {
   const [marker, setMarker] = useState([]);
@@ -25,11 +38,18 @@ export default function Map() {
     ]);
   }, []
   );
-  const mapRef = React.useRef();
+  const mapRef = useRef();
 ////maintain state to not cause re-render
-  const onLoad = React.useCallback((map) => { 
+  const onLoad = useCallback((map) => { 
     mapRef.current = map;
   }, []);
+
+  const panTo = useCallback((lat, lng) => {
+    mapRef.current.panTo({ lat, lng });
+    mapRef.current.setZoom(12);
+  }, []);
+
+
   const libraries = ['places'];
 
   const mapContainerStyle = {
@@ -62,6 +82,7 @@ export default function Map() {
       <h1>My Geolocation App
         <span role='img' aria-label='world'>🗺</span>
       </h1>
+      <Search panTo={panTo} />
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={8}
@@ -87,9 +108,58 @@ export default function Map() {
           </InfoWindow>
         ) : null}
       </GoogleMap>
+    </div>
+  );
+}
 
 
 
+
+
+
+
+
+function Search({ panTo }) {
+  const { ready, value, suggestions:{ status, data }, setValue, clearSuggestion } = usePlacesAutocomplete({
+    requestOptions: {
+      location: { lat: () => 45.6769958, lng: () => -122.5323894 },
+      radius: 200 * 1000,
+    }
+  });
+
+  return (
+    <div className='search'>
+      <Combobox
+        onSelect={async (address) => {
+          setValue(address, false);
+          clearSuggestion();
+          try {
+            const results = await getGeocode({ address });
+            console.log(results, 'getGeocodes');
+            const { lat, lng } = await getLatLng(results[0]);
+            // destructor lat and lng with this built in function
+            console.log(lat, lng, 'getLatLng ||||||');
+            panTo(lat, lng);
+          } catch {
+            alert('Something went wrong');
+          }
+          console.log(location);
+        }}
+      >
+        <ComboboxInput value={value}
+          onChange={(e) => setValue(e.target.value)}
+          disabled={!ready}
+          placeholder='Search Places you want to go'
+        />
+
+        <ComboboxPopover>
+    
+          {status === 'OK' && data.map(({ id, description }) => (
+            <ComboboxOption key={id} value={description} />
+          ))}
+        </ComboboxPopover>
+
+      </Combobox>
     </div>
   );
 }
