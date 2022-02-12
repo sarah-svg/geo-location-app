@@ -23,7 +23,7 @@ export default function Map() {
   };
   const options = {
     styles: style,
-    disableDefaultUI: true,
+    // disableDefaultUI: true,
     zoomControl: true,
 
   };
