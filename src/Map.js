@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   GoogleMap,
   useLoadScript,
@@ -11,6 +11,17 @@ import style from './style.js';
 import './styles.css';
 
 export default function Map() {
+  const [marker, setMarker] = useState([]);
+  const clickOnMap = useCallback((e) => { 
+    setMarker((current) => [
+      ...current, {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng(),
+        time: new Date(),
+      },
+    ]);
+  }, []
+  );
   const libraries = ['places'];
 
   const mapContainerStyle = {
@@ -36,6 +47,7 @@ export default function Map() {
   if (!isLoaded) return 'Loading Maps!!!!!!!!!!';
 
   // REACT_APP_GOOGLE_MAPS
+ 
 
   return (
     <div>
@@ -47,9 +59,14 @@ export default function Map() {
         zoom={8}
         center={center}
         options={options}
-      />
+        onClick={clickOnMap}
+       
+      >
+        {marker.map((single, i) => <Marker key={Math.random() + i}
+          position={{ lat: single.lat, lng: single.lng }} 
+        />)}
 
-
+      </GoogleMap>
 
 
 
