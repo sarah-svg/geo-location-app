@@ -83,6 +83,7 @@ export default function Map() {
         <span role='img' aria-label='world'>🗺</span>
       </h1>
       <Search panTo={panTo} />
+      <LocateUserAndRenderLocation panTo={panTo} />
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={8}
@@ -115,7 +116,21 @@ export default function Map() {
 function LocateUserAndRenderLocation({ panTo }) {
   return (
 
-    <div></div>
+    <div>
+      <button className='locate-user' onClick={() => {
+        navigator.geolocation.getCurrentPosition((position) => {
+          console.log('got location', position);
+          panTo({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+
+        }, () => null);
+      }}>
+        <span role='img' aria-label='world'>🧭</span>
+        Click me to find your location
+      </button>
+    </div>
   );
 }
 
@@ -137,7 +152,7 @@ function Search({ panTo }) {
       <Combobox
         onSelect={async (address) => {
           setValue(address, false);
-          clearSuggestion();
+          // clearSuggestion(...suggestions);
           try {
             const results = await getGeocode({ address });
             console.log(results, 'getGeocodes');
@@ -158,10 +173,14 @@ function Search({ panTo }) {
         />
 
         <ComboboxPopover>
-    
-          {status === 'OK' && data.map(({ id, description }) => (
-            <ComboboxOption key={id} value={description} />
-          ))}
+          <ComboboxList>
+            {status === 'OK' &&
+           
+            data.map(({ id, description, i }) => (
+              <ComboboxOption key={Math.random() * Number(id) + i } value={description} />
+              
+            ))}
+          </ComboboxList>
         </ComboboxPopover>
 
       </Combobox>
