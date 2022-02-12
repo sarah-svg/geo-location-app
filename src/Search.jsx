@@ -1,4 +1,5 @@
 /// import the libraries we need
+/* eslint-disable no-console */
 import '@reach/combobox/styles.css';
 import './styles.css';
 import usePlacesAutocomplete, {
@@ -22,7 +23,7 @@ export default function Search({ panTo }) {
     //// searched location on the map else a alert that will pop up if the users location is not found
     /// usePlacesAutocomplete is a function that takes in 4 parameters of ready, value, suggestions which is a object and to functions
     /// a setValue function and clearSuggestions function.
-  const { ready, value, suggestions:{ status, data }, setValue, clearSuggestion } = usePlacesAutocomplete({
+  const { ready, value, suggestions:{ status, data }, setValue } = usePlacesAutocomplete({
     requestOptions: {
       location: { lat: () => 45.6769958, lng: () => -122.5323894 },
       radius: 200 * 1000,
