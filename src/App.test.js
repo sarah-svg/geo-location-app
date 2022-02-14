@@ -4,6 +4,6 @@ import Map from './Map';
 
 test('renders learn react link', () => {
   render(<Map/>);
-  const linkElement = screen.getByText(/Loading Maps!!!!!!/i);
+  const linkElement = screen.getByText(/Loading Maps!!!!!!!!!!/i);
   expect(linkElement).toBeInTheDocument();
 });
