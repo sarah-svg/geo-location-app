@@ -75,6 +75,9 @@ export default function Map() {
       lat: position.coords.latitude,
       lng: position.coords.longitude,
     };
+    if (!position) {
+      setCurrentPos({ lat: 45.5231, lng: -122.6765 });
+    }
     setCurrentPos(currentPosition);
     // lat: 45.6769958,
 
