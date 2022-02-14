@@ -86,9 +86,9 @@ export default function Map() {
 
 //   if (!current) navigator.geolocation.getCurrentPosition({ lat: 45.5231, lng: -122.6765 });
   useEffect(() => {
-    current ? current : navigator.geolocation.getCurrentPosition(current);
+    navigator.geolocation.getCurrentPosition(current);
     // navigator.geolocation.getCurrentPosition(current);
-  }, []);
+  }, [center]);
 //  console.log(newPosition);
 
   //// this is my map style options from https://snazzymaps.com/style/1243/xxxxxxxxxxx which is a
@@ -129,7 +129,7 @@ export default function Map() {
         // to variables then used those variable in the components when we do it this we we stop the page from
         // re-rendering to many times 
         mapContainerStyle={mapContainerStyle}
-        zoom={8}
+        zoom={14}
         center={center}
         options={options}
         onClick={clickOnMap}
