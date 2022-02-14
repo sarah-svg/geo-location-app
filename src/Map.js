@@ -84,6 +84,7 @@ export default function Map() {
     // lng: -122.5323894
   };
   useEffect(() => {
+    if (!current) return navigator.geolocation.getCurrentPosition({ lat: 45.5231, lng: -122.6765 });
     navigator.geolocation.getCurrentPosition(current);
   });
 
