@@ -1,0 +1,29 @@
+App{
+    width: 100vh;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+h1{
+    position: absolute;
+    top: 1rem;
+    left: 14rem;
+    z-index: 5;
+    padding: 0%;
+    margin: 0%;
+    font-size: 1rem;
+}
+.search{
+    border: none;
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    max-width: 300px; 
+}
+.locate-user{
+    border: none;
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    max-width: 300px; 
+}
