@@ -112,7 +112,7 @@ export default function Map() {
   if (!isLoaded) return 'Loading Maps!!!!!!!!!!';
 
   // REACT_APP_GOOGLE_MAPS
-  if (!center) return <div>Loading</div>;
+
 
   return (
     <div>
