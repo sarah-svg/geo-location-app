@@ -83,10 +83,13 @@ export default function Map() {
 
     // lng: -122.5323894
   };
+
+//   if (!current) return navigator.geolocation.getCurrentPosition({ lat: 45.5231, lng: -122.6765 });
   useEffect(() => {
-    if (!current) return navigator.geolocation.getCurrentPosition({ lat: 45.5231, lng: -122.6765 });
-    navigator.geolocation.getCurrentPosition(current);
-  });
+    current ? current : navigator.geolocation.getCurrentPosition(current);
+    // navigator.geolocation.getCurrentPosition(current);
+  }, []);
+//  console.log(newPosition);
 
   //// this is my map style options from https://snazzymaps.com/style/1243/xxxxxxxxxxx which is a
   //// json file that I import as a default file to style the map how my client wants it.
@@ -109,7 +112,7 @@ export default function Map() {
   if (!isLoaded) return 'Loading Maps!!!!!!!!!!';
 
   // REACT_APP_GOOGLE_MAPS
- 
+  if (!center) return <div>Loading</div>;
 
   return (
     <div>
