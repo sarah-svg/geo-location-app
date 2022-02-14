@@ -138,6 +138,7 @@ export default function Map() {
         {/* this is the marker component which takes in the marker 
         state and maps through each mark and renders then on the page by access the single instance
         and dot notating to grab the values we need then sets the selected value to state
+        and then renders the marker on the page */}
         {marker.map((single, i) => <Marker key={Math.random() + i}
           position={{ lat: single.lat, lng: single.lng }} 
           onClick={() => setSelected(single)}
