@@ -2,7 +2,8 @@
 import React, {
   useState,
   useCallback,
-  useRef
+  useRef,
+  useEffect,
 } from 'react';
 
 import {
@@ -25,10 +26,17 @@ import LocateUserAndRenderLocation from './LocateUserAndRenderLocation.jsx';
 import './styles.css';
 
 export default function Map() {
+   ///maker state and setter
   const [marker, setMarker] = useState([]);
+  ////and setter for the info window
   const [selected, setSelected] = useState(null);
- ///maker state and setter
-  const clickOnMap = useCallback((e) => { 
+  /// create state for the users current location and set it to null
+  /// then in the current I will set it to the users location to state
+  //// inside of the useEffect hook I set navigator.geolocation.getCurrentPosition(current); current users coordinates
+  const [center, setCurrentPos] = useState(null);
+ /// create state for marker of users current location
+
+  const clickOnMap = useCallback((e) => {
     /////setting marker state and previous marker state by spreading
     setMarker((current) => [
       ...current, {
@@ -40,8 +48,8 @@ export default function Map() {
   }, []
   );
   const mapRef = useRef();
-////maintain state to not cause re-render
-  const onLoad = useCallback((map) => { 
+  ////maintain state to not cause re-render
+  const onLoad = useCallback((map) => {
     mapRef.current = map;
   }, []);
   /// on Load we want to set the map to the current map we use a useRef to set the map to the current map inside of a 
@@ -54,7 +62,7 @@ export default function Map() {
     mapRef.current.setZoom(12);
   }, []);
 
- /// we add these to variable to stop re-render
+  /// we add these to variable to stop re-render
   const libraries = ['places'];
   /// set map container and 100vw/vh width and height
   const mapContainerStyle = {
@@ -62,10 +70,20 @@ export default function Map() {
     height: '100vh',
   };
   /// this will load the google map initially in  Northwest US.
-  const center = {
-    lat: 45.6769958,
-    lng: -122.5323894
+  const current = position => {
+    const currentPosition = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+    };
+    setCurrentPos(currentPosition);
+    // lat: 45.6769958,
+
+    // lng: -122.5323894
   };
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(current);
+  });
+
   //// this is my map style options from https://snazzymaps.com/style/1243/xxxxxxxxxxx which is a
   //// json file that I import as a default file to style the map how my client wants it.
   const options = {
@@ -111,9 +129,15 @@ export default function Map() {
         onLoad={onLoad}
        
       >
+        {/* this is the marker component which takes in the center
+        state checks if there is a latitude/longitude and then it will render 
+        the marker on the current location*/}
+        center.lat || center.lng && (
+        <Marker position={center} />
+        )
         {/* this is the marker component which takes in the marker 
         state and maps through each mark and renders then on the page by access the single instance
-        and dot notating to grab the values we need then sets the selected value to state*/}
+        and dot notating to grab the values we need then sets the selected value to state
         {marker.map((single, i) => <Marker key={Math.random() + i}
           position={{ lat: single.lat, lng: single.lng }} 
           onClick={() => setSelected(single)}
@@ -132,6 +156,7 @@ export default function Map() {
             </div>
           </InfoWindow>
         ) : null}
+    
       </GoogleMap>
     </div>
   );
